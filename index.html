@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PanGenesis · AI主动精准健康与生活方式干预</title>
+<meta name="description" content="PanGenesis 基于华大 MGI「133111i」多组学体系,提供风险预测、代谢评估与 90 天干预方案,从治疗走向预防。">
+<style>
+:root{
+  --bg:#050e1f;
+  --bg2:#081530;
+  --card:rgba(255,255,255,.035);
+  --card2:rgba(255,255,255,.06);
+  --border:rgba(255,255,255,.09);
+  --text:#e8eef8;
+  --muted:#93a3bd;
+  --dim:#64748f;
+  --accent:#2dd4bf;
+  --accent2:#38bdf8;
+  --gold:#f5c451;
+  --grad:linear-gradient(120deg,#2dd4bf 0%,#38bdf8 100%);
+  --danger:#f87171;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* subtle grid + glow background */
+.bg-deco{position:fixed;inset:0;z-index:-2;background:
+  radial-gradient(900px 500px at 85% -10%,rgba(45,212,191,.12),transparent 60%),
+  radial-gradient(800px 600px at -10% 30%,rgba(56,189,248,.10),transparent 60%),
+  radial-gradient(700px 500px at 60% 110%,rgba(45,212,191,.06),transparent 60%);
+}
+.bg-deco::after{content:"";position:absolute;inset:0;background-image:
+  linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,#000 30%,transparent 75%);
+}
+.container{max-width:1180px;margin:0 auto;padding:0 28px}
+a{color:inherit;text-decoration:none}
+section{padding:96px 0;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:18px}
+.eyebrow::before{content:"";width:26px;height:1.5px;background:var(--grad)}
+h1,h2,h3{line-height:1.25;font-weight:700}
+h2{font-size:clamp(28px,3.4vw,42px);letter-spacing:-.01em}
+.lead{color:var(--muted);font-size:clamp(15px,1.4vw,18px);max-width:640px}
+.sec-head{margin-bottom:56px}
+.sec-head.center{text-align:center}
+.sec-head.center .lead{margin:14px auto 0}
+
+/* ---------- nav ---------- */
+nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(14px);background:rgba(5,14,31,.75);border-bottom:1px solid var(--border)}
+.nav-in{display:flex;align-items:center;gap:32px;height:66px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:.02em}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:var(--grad);display:grid;place-items:center;color:#04201c;font-weight:900;font-size:15px;box-shadow:0 4px 18px rgba(45,212,191,.4)}
+.nav-links{display:flex;gap:26px;margin-left:auto;font-size:14.5px;color:var(--muted)}
+.nav-links a{transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.lang-switch{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.lang-switch button{background:transparent;border:0;color:var(--muted);padding:5px 11px;font-size:12.5px;cursor:pointer;transition:.2s;font-family:inherit}
+.lang-switch button.active{background:rgba(45,212,191,.14);color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:10px;font-size:14.5px;font-weight:600;cursor:pointer;transition:.25s;border:1px solid transparent;font-family:inherit}
+.btn-primary{background:var(--grad);color:#04201c;box-shadow:0 8px 26px rgba(45,212,191,.30)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(45,212,191,.42)}
+.btn-ghost{border-color:var(--border);color:var(--text);background:rgba(255,255,255,.03)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.menu-btn{display:none;background:transparent;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:16px}
+@media(max-width:900px){
+  .nav-links{display:none;position:absolute;top:66px;left:0;right:0;background:rgba(5,14,31,.98);flex-direction:column;padding:18px 28px;border-bottom:1px solid var(--border);gap:14px}
+  .nav-links.open{display:flex}
+  .menu-btn{display:block;margin-left:auto}
+  .lang-switch{margin-left:0}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:110px 0 90px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--accent);border:1px solid rgba(45,212,191,.35);background:rgba(45,212,191,.07);padding:7px 14px;border-radius:100px;margin-bottom:24px;letter-spacing:.04em}
+.hero h1{font-size:clamp(34px,4.6vw,58px);letter-spacing:-.02em;margin-bottom:22px}
+.hero h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{color:var(--muted);font-size:clamp(15px,1.5vw,18px);max-width:560px;margin-bottom:36px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero-note{margin-top:26px;font-size:12.5px;color:var(--dim)}
+.hero-133{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+.hero-133 span{font-size:12px;color:var(--muted);border:1px solid var(--border);border-radius:100px;padding:5px 12px;background:var(--card)}
+.hero-133 span b{color:var(--accent);font-weight:700}
+
+/* 133111i visual card */
+.i-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.i-cell{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 16px;text-align:center;transition:.3s;position:relative;overflow:hidden}
+.i-cell:hover{border-color:rgba(45,212,191,.5);transform:translateY(-3px);background:var(--card2)}
+.i-num{font-size:clamp(26px,2.6vw,34px);font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
+.i-name{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.4}
+.i-cell.index{grid-column:span 3;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(120deg,rgba(45,212,191,.10),rgba(56,189,248,.08));border-color:rgba(45,212,191,.4)}
+.i-cell.index .i-num{font-size:44px}
+.i-cell.index .i-name{text-align:left;font-size:14px;color:var(--text);max-width:340px}
+.i-cell.index .i-name span{display:block;color:var(--muted);font-size:12.5px;margin-top:4px}
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr}
+  .i-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ---------- stats ---------- */
+.stats{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
+.stats-in{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:44px 0}
+.stat{text-align:center}
+.stat .num{font-size:clamp(30px,3.4vw,46px);font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat .lbl{font-size:13px;color:var(--muted);margin-top:6px}
+@media(max-width:700px){.stats-in{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- three modules ---------- */
+.mod-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.mod-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:30px 26px;transition:.3s;position:relative}
+.mod-card:hover{border-color:rgba(45,212,191,.5);transform:translateY(-4px)}
+.mod-num{font-size:13px;font-weight:800;letter-spacing:.14em;color:var(--accent)}
+.mod-card h3{font-size:20px;margin:12px 0 6px}
+.mod-en{font-size:12px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+.mod-card p{font-size:14px;color:var(--muted)}
+.mod-card ul{list-style:none;margin-top:16px;display:flex;flex-direction:column;gap:9px}
+.mod-card ul li{font-size:13.5px;color:var(--muted);display:flex;gap:10px;align-items:flex-start}
+.mod-card ul li::before{content:"▸";color:var(--accent);flex-shrink:0}
+.in-out{margin-top:18px;padding-top:16px;border-top:1px dashed var(--border);font-size:12px;color:var(--dim)}
+.in-out b{color:var(--muted);font-weight:600}
+@media(max-width:900px){.mod-cards{grid-template-columns:1fr}}
+
+/* ---------- bio age ---------- */
+.bio-wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.rings{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ring{text-align:center}
+.ring .svg-wrap{position:relative;width:110px;margin:0 auto}
+.ring svg{transform:rotate(-90deg)}
+.ring .pct{position:absolute;inset:0;display:grid;place-items:center;font-size:20px;font-weight:800}
+.ring .pct small{font-size:10px;color:var(--dim);font-weight:600;display:block}
+.ring .rlbl{font-size:12.5px;color:var(--muted);margin-top:10px}
+.bio-points{display:flex;flex-direction:column;gap:16px;margin-top:26px}
+.bio-point{display:flex;gap:14px;font-size:14px;color:var(--muted)}
+.bio-point .ic{width:26px;height:26px;border-radius:8px;background:rgba(45,212,191,.12);color:var(--accent);display:grid;place-items:center;font-size:13px;flex-shrink:0}
+.bio-point b{color:var(--text);font-weight:600}
+.chem{margin-top:30px;display:flex;flex-wrap:wrap;gap:8px}
+.chem span{font-size:11.5px;color:var(--dim);border:1px solid var(--border);border-radius:100px;padding:4px 11px;background:var(--card)}
+@media(max-width:900px){.bio-wrap{grid-template-columns:1fr}}
+
+/* ---------- services / audience ---------- */
+.aud-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.aud-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:32px 28px;transition:.3s;display:flex;flex-direction:column}
+.aud-card:hover{border-color:rgba(56,189,248,.5);transform:translateY(-4px)}
+.aud-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:20px;margin-bottom:18px;background:linear-gradient(120deg,rgba(45,212,191,.16),rgba(56,189,248,.16))}
+.aud-card h3{font-size:19px;margin-bottom:10px}
+.aud-card p{font-size:14px;color:var(--muted);flex:1}
+.aud-card ul{list-style:none;margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.aud-card ul li{font-size:13px;color:var(--muted);display:flex;gap:9px;align-items:flex-start}
+.aud-card ul li::before{content:"✓";color:var(--accent);font-weight:700;flex-shrink:0}
+.aud-card .link{margin-top:20px;font-size:13.5px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:6px}
+.aud-card .link:hover{gap:10px}
+@media(max-width:900px){.aud-cards{grid-template-columns:1fr}}
+
+/* ---------- throughput ---------- */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.flow-card{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--border);border-radius:16px;padding:26px 22px;text-align:center;transition:.3s}
+.flow-card:hover{border-color:rgba(45,212,191,.45);transform:translateY(-3px)}
+.flow-card .fnum{font-size:clamp(24px,2.4vw,32px);font-weight:900;color:var(--accent)}
+.flow-card .fnum small{font-size:13px;font-weight:600;color:var(--dim);margin-left:2px}
+.flow-card .flbl{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+@media(max-width:900px){.flow{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- report demo ---------- */
+.report-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.report-card{border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--card);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.report-top{background:linear-gradient(120deg,rgba(45,212,191,.12),rgba(56,189,248,.10));padding:22px 26px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.report-top .rt-logo{width:38px;height:38px;border-radius:10px;background:var(--grad);display:grid;place-items:center;color:#04201c;font-weight:900}
+.report-top .rt-t{font-size:14.5px;font-weight:700}
+.report-top .rt-s{font-size:11.5px;color:var(--dim)}
+.report-body{padding:26px}
+.rp-item{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px dashed var(--border)}
+.rp-item:last-child{border-bottom:0}
+.rp-n{width:34px;height:34px;border-radius:10px;background:rgba(45,212,191,.12);color:var(--accent);font-weight:800;font-size:13px;display:grid;place-items:center;flex-shrink:0}
+.rp-t b{display:block;font-size:14.5px}
+.rp-t span{font-size:12px;color:var(--dim)}
+.rp-bar{margin-left:auto;width:86px;height:5px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden;flex-shrink:0}
+.rp-bar i{display:block;height:100%;border-radius:3px;background:var(--grad)}
+.rp-disc{margin-top:16px;font-size:11.5px;color:var(--dim);line-height:1.7;border:1px dashed rgba(245,196,81,.4);background:rgba(245,196,81,.05);padding:12px 14px;border-radius:10px}
+.report-right h3{font-size:clamp(22px,2.6vw,30px);margin-bottom:16px}
+.report-right p{font-size:14.5px;color:var(--muted);margin-bottom:14px}
+.report-right ul{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:24px}
+.report-right ul li{font-size:13.5px;color:var(--muted);display:flex;gap:10px}
+.report-right ul li::before{content:"✓";color:var(--accent);font-weight:700}
+@media(max-width:900px){.report-wrap{grid-template-columns:1fr}}
+
+/* ---------- ecosystem / team ---------- */
+.eco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.eco-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:30px 26px;transition:.3s}
+.eco-card:hover{border-color:rgba(56,189,248,.5);transform:translateY(-4px)}
+.eco-card .e-ic{font-size:26px;margin-bottom:16px}
+.eco-card h3{font-size:17.5px;margin-bottom:10px}
+.eco-card p{font-size:13.5px;color:var(--muted)}
+@media(max-width:900px){.eco-grid{grid-template-columns:1fr}}
+
+/* ---------- pubs ---------- */
+.pubs{display:flex;flex-direction:column;gap:14px}
+.pub{display:flex;gap:18px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 24px;transition:.25s}
+.pub:hover{border-color:rgba(45,212,191,.45)}
+.pub .yr{font-size:12px;font-weight:800;color:var(--accent);border:1px solid rgba(45,212,191,.35);border-radius:8px;padding:4px 10px;flex-shrink:0;margin-top:2px}
+.pub .pt{font-size:14px;color:var(--text);font-weight:600;line-height:1.5}
+.pub .pj{font-size:12px;color:var(--dim);margin-top:5px}
+
+/* ---------- CTA ---------- */
+.cta{padding:110px 0}
+.cta-box{position:relative;border:1px solid rgba(45,212,191,.4);border-radius:26px;padding:64px 40px;text-align:center;overflow:hidden;background:linear-gradient(150deg,rgba(45,212,191,.10),rgba(56,189,248,.06) 60%,transparent)}
+.cta-box::before{content:"";position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(45,212,191,.14),transparent 65%);top:-260px;left:50%;transform:translateX(-50%)}
+.cta-box h2{font-size:clamp(26px,3.4vw,40px);margin-bottom:14px;position:relative}
+.cta-box p{color:var(--muted);max-width:520px;margin:0 auto 34px;position:relative;font-size:15px}
+.cta-box .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+.cta-mail{display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-size:13.5px;color:var(--muted);position:relative}
+.cta-mail b{color:var(--accent);font-weight:600}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--border);background:rgba(0,0,0,.25);padding:64px 0 40px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.foot-grid h4{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--text);margin-bottom:18px}
+.foot-grid a,.foot-grid p{display:block;font-size:13.5px;color:var(--muted);margin-bottom:10px;transition:.2s}
+.foot-grid a:hover{color:var(--accent)}
+.foot-brand p{font-size:13px;color:var(--muted);margin-top:14px;max-width:300px;line-height:1.7}
+.compliance{border:1px dashed rgba(245,196,81,.35);background:rgba(245,196,81,.04);border-radius:12px;padding:14px 18px;font-size:12px;color:var(--dim);line-height:1.7;margin-bottom:40px}
+.compliance b{color:var(--gold);font-weight:600}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-top:1px solid var(--border);padding-top:26px;font-size:12.5px;color:var(--dim)}
+@media(max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}}
+
+/* ---------- reveal animation ---------- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* language default: show zh */
+[data-lang="en"]{display:none}
+html[lang="en"] [data-lang="zh"]{display:none}
+html[lang="en"] [data-lang="en"]{display:inline}
+html[lang="en"] .nav-links,html[lang="en"] .hero-133,html[lang="en"] .stats-in{display:flex}
+html[lang="en"] .mod-cards,html[lang="en"] .aud-cards,html[lang="en"] .flow,html[lang="en"] .eco-grid,html[lang="en"] .i-grid{display:grid}
+</style>
+</head>
+<body>
+<div class="bg-deco"></div>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <div class="container nav-in">
+    <a href="#top" class="logo"><span class="logo-mark">P</span><span>PanGenesis</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="solutions.html" data-lang="zh">解决方案</a><a href="solutions.html" data-lang="en">Solutions</a>
+      <a href="#i133" data-lang="zh">133111i 体系</a><a href="#i133" data-lang="en">133111i System</a>
+      <a href="#bioage" data-lang="zh">科学基础</a><a href="#bioage" data-lang="en">Science</a>
+      <a href="#audience" data-lang="zh">服务人群</a><a href="#audience" data-lang="en">Audiences</a>
+      <a href="#about" data-lang="zh">关于我们</a><a href="#about" data-lang="en">About</a>
+      <a href="#contact" data-lang="zh">联系</a><a href="#contact" data-lang="en">Contact</a>
+    </div>
+    <div class="lang-switch">
+      <button id="langZh" class="active" onclick="setLang('zh')">中</button>
+      <button id="langEn" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+    <a href="#contact" class="btn btn-primary" style="padding:9px 18px;font-size:13.5px" data-lang="zh">预约咨询</a>
+    <a href="#contact" class="btn btn-primary" style="padding:9px 18px;font-size:13.5px" data-lang="en">Consult</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero container" id="top">
+  <div class="hero-grid">
+    <div>
+      <div class="badge" data-lang="zh">基于华大 MGI「133111i」多组学精准预防体系</div>
+      <div class="badge" data-lang="en">Built on BGI/MGI's "133111i" Multi-Omics Precision Prevention System</div>
+      <h1><span data-lang="zh">AI 主动精准健康<br>与<span class="grad">生活方式干预</span></span>
+          <span data-lang="en">AI-Powered Precision Health<br>&amp; <span class="grad">Lifestyle Intervention</span></span></h1>
+      <p class="sub" data-lang="zh">融合基因组、代谢组、蛋白组与肠道微生物组,结合医学影像与可穿戴数据,以「多组学 + AI」实现疾病早筛与个体化干预——从「治已病」走向「防未病」。</p>
+      <p class="sub" data-lang="en">Integrating genomics, metabolomics, proteomics and the gut microbiome with clinical imaging and wearable data, "Multi-Omics + AI" enables early screening and personalized intervention — moving from treatment to prevention.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary" data-lang="zh">预约健康咨询</a>
+        <a href="#contact" class="btn btn-primary" data-lang="en">Book a Consultation</a>
+        <a href="#i133" class="btn btn-ghost" data-lang="zh">了解 133111i 体系 →</a>
+        <a href="#i133" class="btn btn-ghost" data-lang="en">Explore the 133111i System →</a>
+      </div>
+      <div class="hero-note" data-lang="zh">* 本服务用于健康风险识别与生活方式评估,不替代临床诊断与治疗。</div>
+      <div class="hero-note" data-lang="en">* For health risk identification and lifestyle assessment only — not a substitute for clinical diagnosis or treatment.</div>
+      <div class="hero-133">
+        <span><b>1</b> Genome</span><span><b>3</b> Biofluids</span><span><b>3</b> Imaging</span>
+        <span><b>1</b> Microscopy</span><span><b>1</b> Wearable</span><span><b>1</b> Neuro</span><span><b>i</b> Life Index</span>
+      </div>
+    </div>
+    <div>
+      <div class="i-grid">
+        <div class="i-cell"><div class="i-num">1</div><div class="i-name" data-lang="zh">个人全基因组<br>WGS 遗传风险评估</div><div class="i-name" data-lang="en">Whole Genome<br>Genetic Risk Assessment</div></div>
+        <div class="i-cell"><div class="i-num">3</div><div class="i-name" data-lang="zh">血液 · 尿液 · 粪便<br>蛋白/表观/微生物组</div><div class="i-name" data-lang="en">Blood · Urine · Stool<br>Proteo / Epigeno / Microbiome</div></div>
+        <div class="i-cell"><div class="i-num">3</div><div class="i-name" data-lang="zh">超声 · CT · MRI<br>器官结构与功能</div><div class="i-name" data-lang="en">Ultrasound · CT · MRI<br>Organ Structure &amp; Function</div></div>
+        <div class="i-cell"><div class="i-num">1</div><div class="i-name" data-lang="zh">显微检查<br>精准临床工作流</div><div class="i-name" data-lang="en">Microscopic Exam<br>Precise Clinical Workflow</div></div>
+        <div class="i-cell"><div class="i-num">1</div><div class="i-name" data-lang="zh">可穿戴设备<br>实时连续监测</div><div class="i-name" data-lang="en">Wearable Device<br>Real-Time Monitoring</div></div>
+        <div class="i-cell"><div class="i-num">1</div><div class="i-name" data-lang="zh">脑功能模块<br>脑活动分析与调控</div><div class="i-name" data-lang="en">Neuro Module<br>Brain Activity &amp; Regulation</div></div>
+        <div class="i-cell index">
+          <div class="i-num">i</div>
+          <div class="i-name" data-lang="zh">生命指数 Life Index<span>AI 融合低频基因数据与高频可穿戴数据,构建动态、可预测的个体健康模型</span></div>
+          <div class="i-name" data-lang="en">Life Index<span>AI fuses low-frequency genetic data with high-frequency wearable data into a dynamic, predictive health model</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ STATS ============ -->
+<div class="stats">
+  <div class="container stats-in">
+    <div class="stat"><div class="num" data-count="1000" data-suffix="+">0+</div><div class="lbl" data-lang="zh">多组学检测指标</div><div class="lbl" data-lang="en">Multi-Omics Indicators</div></div>
+    <div class="stat"><div class="num" data-count="9">0</div><div class="lbl" data-lang="zh">人体器官/系统分析</div><div class="lbl" data-lang="en">Organ Systems Analyzed</div></div>
+    <div class="stat"><div class="num" data-count="403">0</div><div class="lbl" data-lang="zh">生物标志物测量</div><div class="lbl" data-lang="en">Biomarkers Measured</div></div>
+    <div class="stat"><div class="num" data-count="3">0</div><div class="lbl" data-lang="zh">报告输出层级</div><div class="lbl" data-lang="en">Report Output Layers</div></div>
+  </div>
+</div>
+
+<!-- ============ THREE MODULES ============ -->
+<section id="modules">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow" data-lang="zh">核心解决方案 · Core Solution</span>
+      <span class="eyebrow" data-lang="en">Core Solution</span>
+      <h2 data-lang="zh">三层输出 · 从风险识别到行动方案</h2>
+      <h2 data-lang="en">Three Layers: From Risk Identification to Action</h2>
+      <p class="lead" data-lang="zh">每一份真实样本健康分析评估书都遵循相同的三层逻辑:先预测风险,再评估现状,最后给出可执行的 90 天干预方案。</p>
+      <p class="lead" data-lang="en">Every real-world sample health report follows the same three-layer logic: predict risk, assess status, then deliver an actionable 90-day intervention plan.</p>
+    </div>
+    <div class="mod-cards">
+      <div class="mod-card reveal">
+        <div class="mod-num">01</div>
+        <h3 data-lang="zh">风险预测</h3><h3 data-lang="en">Risk Prediction</h3>
+        <div class="mod-en" data-lang="zh">Risk Prediction</div><div class="mod-en" data-lang="en">Risk Prediction</div>
+        <p data-lang="zh">基于家族史、医学史、实验室数据、体征与可选基因数据,输出早期预警、风险分层与复查/转诊优先级。</p>
+        <p data-lang="en">Leveraging family history, medical history, laboratory data, vital signs and optional genetic data to deliver early warnings, risk stratification and follow-up priority.</p>
+        <div class="in-out" data-lang="zh"><b>输出:</b>早期预警 · 风险分层 · 复查优先级</div>
+        <div class="in-out" data-lang="en"><b>Output:</b> Early Warning · Risk Stratification · Review Priority</div>
+      </div>
+      <div class="mod-card reveal">
+        <div class="mod-num">02</div>
+        <h3 data-lang="zh">代谢与生理评估</h3><h3 data-lang="en">Metabolic Assessment</h3>
+        <div class="mod-en" data-lang="zh">Metabolic Assessment</div><div class="mod-en" data-lang="en">Metabolic Assessment</div>
+        <p data-lang="zh">整合生物标志物、生命体征、可穿戴数据与身体测量,评估身体机能与代谢平衡,锁定关键可改变因素。</p>
+        <p data-lang="en">Integrating biomarkers, vital signs, wearable data and anthropometrics to evaluate body function and metabolic balance, pinpointing key modifiable factors.</p>
+        <div class="in-out" data-lang="zh"><b>输出:</b>身体机能 · 代谢平衡 · 关键可改变因素</div>
+        <div class="in-out" data-lang="en"><b>Output:</b> Body Function · Metabolic Balance · Modifiable Factors</div>
+      </div>
+      <div class="mod-card reveal">
+        <div class="mod-num">03</div>
+        <h3 data-lang="zh">90 天干预方案</h3><h3 data-lang="en">90-Day Intervention Plan</h3>
+        <div class="mod-en" data-lang="zh">Intervention Plan</div><div class="mod-en" data-lang="en">Intervention Plan</div>
+        <p data-lang="zh">在医学边界内,结合用户偏好与行为数据,制定 90 天生活方式行动、监测指标与升级条件,并持续追踪。</p>
+        <p data-lang="en">Within medical boundaries, combining user preferences and behavioral data to build a 90-day lifestyle action plan with monitoring metrics, escalation criteria and continuous tracking.</p>
+        <div class="in-out" data-lang="zh"><b>输出:</b>90天行动 · 监测指标 · 升级条件</div>
+        <div class="in-out" data-lang="en"><b>Output:</b> 90-Day Actions · Monitoring Metrics · Escalation Criteria</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 133111i ============ -->
+<section id="i133" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="sec-head center reveal">
+      <span class="eyebrow" data-lang="zh">多组学精准预防体系</span><span class="eyebrow" data-lang="en">Precision Prevention System</span>
+      <h2 data-lang="zh">「133111i」范式</h2>
+      <h2 data-lang="en">The "133111i" Paradigm</h2>
+      <p class="lead" data-lang="zh">一个基因组 · 三种生物流体 · 三种影像 · 一次显微检查 · 一件可穿戴 · 一个脑功能模块 · 一项生命指数。以多组学数据构建每个人的数字健康孪生。</p>
+      <p class="lead" data-lang="en">One genome · three biofluids · three imaging modalities · one microscopic exam · one wearable · one neuro module · one life index. Building a digital health twin from multi-omics data.</p>
+    </div>
+    <div class="bio-wrap">
+      <div class="reveal">
+        <div class="i-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="i-cell"><div class="i-num">1</div><div class="i-name" data-lang="zh">全基因组测序<br>WGS 解码遗传密码</div><div class="i-name" data-lang="en">Whole Genome Sequencing<br>Decoding the Genetic Code</div></div>
+          <div class="i-cell"><div class="i-num">3</div><div class="i-name" data-lang="zh">三大体液<br>血液 · 尿液 · 粪便</div><div class="i-name" data-lang="en">Three Biofluids<br>Blood · Urine · Stool</div></div>
+          <div class="i-cell"><div class="i-num">3</div><div class="i-name" data-lang="zh">三大影像<br>超声 · CT · MRI</div><div class="i-name" data-lang="en">Three Imaging<br>Ultrasound · CT · MRI</div></div>
+          <div class="i-cell"><div class="i-num">1</div><div class="i-name" data-lang="zh">显微检查<br>结构功能验证</div><div class="i-name" data-lang="en">Microscopic Exam<br>Structural Validation</div></div>
+          <div class="i-cell"><div class="i-num">1</div><div class="i-name" data-lang="zh">可穿戴<br>实时生理监测</div><div class="i-name" data-lang="en">Wearable<br>Real-Time Physiology</div></div>
+          <div class="i-cell"><div class="i-num">1</div><div class="i-name" data-lang="zh">脑功能模块<br>精准脑分析</div><div class="i-name" data-lang="en">Neuro Module<br>Precise Brain Analysis</div></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="bio-points">
+          <div class="bio-point"><div class="ic">◇</div><div data-lang="zh"><b>多组学数据融合</b> — 基因组、代谢组、蛋白组、微生物组与临床影像、可穿戴数据一体化分析</div><div data-lang="en"><b>Multi-Omics Fusion</b> — genomics, metabolomics, proteomics and microbiome integrated with imaging &amp; wearables</div></div>
+          <div class="bio-point"><div class="ic">◇</div><div data-lang="zh"><b>AI 全流程引擎</b> — 从数据采集到报告生成,AI 贯穿数据融合、动态风险预测与个性化干预推荐</div><div data-lang="en"><b>AI Throughout</b> — from data acquisition to report generation: fusion, dynamic risk prediction and intervention recommendation</div></div>
+          <div class="bio-point"><div class="ic">◇</div><div data-lang="zh"><b>专家在环</b> — AI 效率 + 医学知识图谱 + 复杂病例专家复核,确保权威与可信</div><div data-lang="en"><b>Expert-in-the-Loop</b> — AI efficiency backed by a medical knowledge graph and expert review for complex cases</div></div>
+          <div class="bio-point"><div class="ic">◇</div><div data-lang="zh"><b>闭环管理</b> — 评估 → 干预 → 教育 → 追踪,发现问题,更提供解决方案</div><div data-lang="en"><b>Closed-Loop</b> — Assess → Intervene → Educate → Track. We don't just find problems; we provide solutions.</div></div>
+        </div>
+        <div class="chem">
+          <span>Metabolomics</span><span>Proteomics</span><span>Epigenomics</span><span>Microbiome</span>
+          <span>Imaging</span><span>Wearables</span><span>AI Engine</span><span>Life Index</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BIO AGE ============ -->
+<section id="bioage">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow" data-lang="zh">科学基础 · Science</span><span class="eyebrow" data-lang="en">Science</span>
+      <h2 data-lang="zh">器官生物年龄与生命指数</h2>
+      <h2 data-lang="en">Organ Biological Age &amp; Life Index</h2>
+      <p class="lead" data-lang="zh">人体内存在多个以不同速率衰老的「时钟」。通过 403 项生物标志物构建 9 大器官系统的生物年龄,让衰老与健康状态可量化、可干预。</p>
+      <p class="lead" data-lang="en">The human body holds multiple "clocks" aging at different speeds. Using 403 biomarkers, we construct biological ages for 9 organ systems — making aging measurable and actionable.</p>
+    </div>
+    <div class="bio-wrap">
+      <div class="rings reveal">
+        <div class="ring"><div class="svg-wrap"><svg width="110" height="110"><circle cx="55" cy="55" r="46" stroke="rgba(255,255,255,.08)" stroke-width="8" fill="none"/><circle class="ringv" cx="55" cy="55" r="46" stroke="url(#g1)" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289"/><defs><linearGradient id="g1"><stop offset="0%" stop-color="#2dd4bf"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs></svg><div class="pct"><span data-count="0" data-val="72">0<small>岁 Age</small></span></div></div><div class="rlbl" data-lang="zh">心血管系统</div><div class="rlbl" data-lang="en">Cardiovascular</div></div>
+        <div class="ring"><div class="svg-wrap"><svg width="110" height="110"><circle cx="55" cy="55" r="46" stroke="rgba(255,255,255,.08)" stroke-width="8" fill="none"/><circle class="ringv" cx="55" cy="55" r="46" stroke="url(#g2)" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289"/><defs><linearGradient id="g2"><stop offset="0%" stop-color="#2dd4bf"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs></svg><div class="pct"><span data-count="0" data-val="68">0<small>岁 Age</small></span></div></div><div class="rlbl" data-lang="zh">免疫系统</div><div class="rlbl" data-lang="en">Immune</div></div>
+        <div class="ring"><div class="svg-wrap"><svg width="110" height="110"><circle cx="55" cy="55" r="46" stroke="rgba(255,255,255,.08)" stroke-width="8" fill="none"/><circle class="ringv" cx="55" cy="55" r="46" stroke="url(#g3)" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289"/><defs><linearGradient id="g3"><stop offset="0%" stop-color="#2dd4bf"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient></defs></svg><div class="pct"><span data-count="0" data-val="64">0<small>岁 Age</small></span></div></div><div class="rlbl" data-lang="zh">肠道微生物组</div><div class="rlbl" data-lang="en">Gut Microbiome</div></div>
+      </div>
+      <div class="reveal">
+        <p style="font-size:14.5px;color:var(--muted);margin-bottom:14px" data-lang="zh">华大团队全球首次构建多器官生物年龄模型,以 <b style="color:var(--text)">11 个生物功能模块 (BFM)</b> 算法预警健康状态、指导精准干预,并生成个体化生命指数。</p>
+        <p style="font-size:14.5px;color:var(--muted);margin-bottom:14px" data-lang="en">BGI researchers built the world's first multi-organ biological age model. <b style="color:var(--text)">11 Biological Functional Modules (BFM)</b> algorithms flag health status, guide precise intervention and generate a personalized Life Index.</p>
+        <div class="chem" style="margin-top:6px">
+          <span data-lang="zh">74 代谢组特征</span><span data-lang="en">74 metabolomic features</span>
+          <span data-lang="zh">34 临床生化指标</span><span data-lang="en">34 clinical biochemistry</span>
+          <span data-lang="zh">36 免疫组成参数</span><span data-lang="en">36 immune parameters</span>
+          <span data-lang="zh">15 身体组成指标</span><span data-lang="en">15 body composition</span>
+          <span data-lang="zh">16 面部皮肤特征</span><span data-lang="en">16 facial skin features</span>
+          <span data-lang="zh">210 肠道菌群特征</span><span data-lang="en">210 gut microbiome profiles</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AUDIENCE ============ -->
+<section id="audience" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="sec-head center reveal">
+      <span class="eyebrow" data-lang="zh">服务人群</span><span class="eyebrow" data-lang="en">Who We Serve</span>
+      <h2 data-lang="zh">为不同人群提供精准健康管理</h2>
+      <h2 data-lang="en">Precision Health Management for Everyone</h2>
+    </div>
+    <div class="aud-cards">
+      <div class="aud-card reveal">
+        <div class="aud-ic">🧬</div>
+        <h3 data-lang="zh">个人用户</h3><h3 data-lang="en">Individuals</h3>
+        <p data-lang="zh">从标准体检升级到精准健康管理,一份报告读懂自己的身体年龄与健康风险。</p>
+        <p data-lang="en">Upgrade from standard checkups to precision health management — understand your biological age and health risks in one report.</p>
+        <ul>
+          <li data-lang="zh">133111i 全面检测与 AI 评估</li><li data-lang="en">133111i full testing &amp; AI assessment</li>
+          <li data-lang="zh">90 天个性化干预与追踪</li><li data-lang="en">90-day personalized intervention &amp; tracking</li>
+          <li data-lang="zh">VIP 健康管家专属服务</li><li data-lang="en">VIP "Health Butler" concierge service</li>
+        </ul>
+        <a href="solutions.html#individual" class="link" data-lang="zh">了解个人服务 →</a><a href="solutions.html#individual" class="link" data-lang="en">Individual Services →</a>
+      </div>
+      <div class="aud-card reveal">
+        <div class="aud-ic">🏢</div>
+        <h3 data-lang="zh">企业与机构</h3><h3 data-lang="en">Enterprises</h3>
+        <p data-lang="zh">员工健康与职场慢病管理,将体检数据转化为可干预的健康资产,降低慢病风险。</p>
+        <p data-lang="en">Employee health and workplace chronic disease management — turning checkup data into actionable health capital.</p>
+        <ul>
+          <li data-lang="zh">团检升级与多组学检测</li><li data-lang="en">Group checkup upgrades &amp; multi-omics testing</li>
+          <li data-lang="zh">职场健康管理闭环</li><li data-lang="en">Workplace health closed-loop management</li>
+          <li data-lang="zh">健康论坛与员工教育</li><li data-lang="en">Health forums &amp; employee education</li>
+        </ul>
+        <a href="solutions.html#enterprise" class="link" data-lang="zh">企业合作咨询 →</a><a href="solutions.html#enterprise" class="link" data-lang="en">Enterprise Solutions →</a>
+      </div>
+      <div class="aud-card reveal">
+        <div class="aud-ic">🏥</div>
+        <h3 data-lang="zh">医疗机构与合作方</h3><h3 data-lang="en">Healthcare &amp; Partners</h3>
+        <p data-lang="zh">依托 MGI 智能实验室的高通量平台,为机构输出检测、分析与平台技术服务。</p>
+        <p data-lang="en">Leveraging MGI smart-lab high-throughput platforms to deliver testing, analysis and platform technology services.</p>
+        <ul>
+          <li data-lang="zh">多组学检测平台服务</li><li data-lang="en">Multi-omics testing platform services</li>
+          <li data-lang="zh">数据解读与报告系统</li><li data-lang="en">Data interpretation &amp; report systems</li>
+          <li data-lang="zh">一带一路医疗技术出海</li><li data-lang="en">Belt &amp; Road medical technology export</li>
+        </ul>
+        <a href="solutions.html#healthcare" class="link" data-lang="zh">合作洽谈 →</a><a href="solutions.html#healthcare" class="link" data-lang="en">Partnership →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THROUGHPUT ============ -->
+<section>
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow" data-lang="zh">平台能力 · Platform</span><span class="eyebrow" data-lang="en">Platform</span>
+      <h2 data-lang="zh">MGI 智能实验室 · 高通量数据引擎</h2>
+      <h2 data-lang="en">MGI Smart Lab: High-Throughput Data Engine</h2>
+      <p class="lead" data-lang="zh">全自动化智能实验室日处理数万样本,以体检级成本获得多维度数据——(示例通量,详见具体项目)。</p>
+      <p class="lead" data-lang="en">A fully automated smart lab processing tens of thousands of samples daily — rich data dimensions at checkup-level cost. (Sample throughput, see specific programs.)</p>
+    </div>
+    <div class="flow">
+      <div class="flow-card reveal"><div class="fnum" data-count="4700" data-suffix="">0<small>例/周</small></div><div class="flbl" data-lang="zh">肠道微生物测序</div><div class="flbl" data-lang="en">Gut Microbiome Sequencing / week</div></div>
+      <div class="flow-card reveal"><div class="fnum" data-count="8000" data-suffix="">0<small>例/日</small></div><div class="flbl" data-lang="zh">结直肠癌早筛</div><div class="flbl" data-lang="en">Colorectal Cancer Screening / day</div></div>
+      <div class="flow-card reveal"><div class="fnum" data-count="50000" data-suffix="">0<small>例/年</small></div><div class="flbl" data-lang="zh">全基因组测序</div><div class="flbl" data-lang="en">Whole Genome Sequencing / year</div></div>
+      <div class="flow-card reveal"><div class="fnum" data-count="8000" data-suffix="">0<small>例/日</small></div><div class="flbl" data-lang="zh">幽门螺杆菌检测</div><div class="flbl" data-lang="en">H. pylori Detection / day</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REPORT DEMO ============ -->
+<section id="report" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container report-wrap">
+    <div class="report-card reveal">
+      <div class="report-top">
+        <div class="rt-logo">P</div>
+        <div><div class="rt-t">PanGenesis</div><div class="rt-s" data-lang="zh">真实样本健康分析评估书</div><div class="rt-s" data-lang="en">Real-World Sample Health Analysis &amp; Evaluation Report</div></div>
+      </div>
+      <div class="report-body">
+        <div class="rp-item">
+          <div class="rp-n">01</div>
+          <div class="rp-t"><b data-lang="zh">风险预测</b><b data-lang="en">Risk Prediction</b><span data-lang="zh">家族史 · 医学史 · 实验室 · 基因</span><span data-lang="en">History · Labs · Genetics</span></div>
+          <div class="rp-bar"><i style="width:72%"></i></div>
+        </div>
+        <div class="rp-item">
+          <div class="rp-n">02</div>
+          <div class="rp-t"><b data-lang="zh">代谢与生理评估</b><b data-lang="en">Metabolic Assessment</b><span data-lang="zh">生物标志物 · 生命体征 · 可穿戴</span><span data-lang="en">Biomarkers · Vitals · Wearables</span></div>
+          <div class="rp-bar"><i style="width:58%"></i></div>
+        </div>
+        <div class="rp-item">
+          <div class="rp-n">03</div>
+          <div class="rp-t"><b data-lang="zh">90 天干预方案</b><b data-lang="en">90-Day Intervention Plan</b><span data-lang="zh">行动 · 监测 · 升级条件</span><span data-lang="en">Actions · Monitoring · Escalation</span></div>
+          <div class="rp-bar"><i style="width:85%"></i></div>
+        </div>
+        <div class="rp-disc" data-lang="zh">⚖ 报告用于健康风险识别、生活方式评估与健康管理支持,不替代临床诊断、处方、急诊判断或专科治疗。涉及疾病诊断、药物调整或急诊决策时,转入相应资质的医疗服务流程。全部样本经脱敏处理,医学复核后签发。</div>
+        <div class="rp-disc" data-lang="en">⚖ For health risk identification, lifestyle assessment and health management support only — not a substitute for clinical diagnosis, prescriptions, emergency judgment or specialist care. Samples are de-identified; reports are medically reviewed before release.</div>
+      </div>
+    </div>
+    <div class="report-right reveal">
+      <span class="eyebrow" data-lang="zh">报告产品</span><span class="eyebrow" data-lang="en">Report Product</span>
+      <h3 data-lang="zh">一本看懂风险、现状与行动</h3>
+      <h3 data-lang="en">Risk, Status &amp; Action in One Report</h3>
+      <p data-lang="zh">借鉴三甲医院临床报告规范,每一份评估书包含 15 个章节:从样本控制、授权伦理、数据质量,到医疗安全预检、综合结论、干预方案与医学审核签发。</p>
+      <p data-lang="en">Modeled on clinical report standards, each evaluation contains 15 chapters — from sample control, consent &amp; ethics, data quality, to medical safety triage, integrated conclusions, intervention plans and medical review &amp; sign-off.</p>
+      <ul>
+        <li data-lang="zh">全流程责任链:数据接收 → 质控 → AI 分析 → 医学复核签发</li><li data-lang="en">Full responsibility chain: data intake → QC → AI analysis → medical review &amp; release</li>
+        <li data-lang="zh">脱敏数据治理与最小权限访问</li><li data-lang="en">De-identified data governance with least-privilege access</li>
+        <li data-lang="zh">危急值与红旗症状自动分流至医疗通道</li><li data-lang="en">Critical values &amp; red-flag symptoms auto-routed to medical channels</li>
+      </ul>
+      <a href="#contact" class="btn btn-primary" data-lang="zh">索取示例报告</a>
+      <a href="#contact" class="btn btn-primary" data-lang="en">Request a Sample Report</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ECOSYSTEM ============ -->
+<section id="about">
+  <div class="container">
+    <div class="sec-head center reveal">
+      <span class="eyebrow" data-lang="zh">生态与信任</span><span class="eyebrow" data-lang="en">Ecosystem &amp; Trust</span>
+      <h2 data-lang="zh">站在华大/MGI 生态之上</h2>
+      <h2 data-lang="en">Built on the BGI/MGI Ecosystem</h2>
+    </div>
+    <div class="eco-grid">
+      <div class="eco-card reveal">
+        <div class="e-ic">🔬</div>
+        <h3 data-lang="zh">华大研究院背景</h3><h3 data-lang="en">BGI-Research Background</h3>
+        <p data-lang="zh">团队核心成员来自华大研究院,拥有 18 年以上微生物学与组学研究经验,发表多篇高影响力论文。</p>
+        <p data-lang="en">Core members come from BGI-Research with 18+ years of microbiology and omics experience and multiple high-impact publications.</p>
+      </div>
+      <div class="eco-card reveal">
+        <div class="e-ic">🧪</div>
+        <h3 data-lang="zh">MGI 智能实验室</h3><h3 data-lang="en">MGI Smart Lab</h3>
+        <p data-lang="zh">共享深圳、杭州等成熟实验基地与设备供应链,轻资产运营,保障高通量与成本优势。</p>
+        <p data-lang="en">Shared mature lab bases (Shenzhen, Hangzhou) and equipment supply chain — asset-light operations with high throughput and cost efficiency.</p>
+      </div>
+      <div class="eco-card reveal">
+        <div class="e-ic">🤝</div>
+        <h3 data-lang="zh">学术与医学合作</h3><h3 data-lang="en">Academic &amp; Medical Collaboration</h3>
+        <p data-lang="zh">与香港大学李嘉诚医学院等机构开展学术合作,复杂病例由医学专家复核把关。</p>
+        <p data-lang="en">Academic partnership with HKU LKS Faculty of Medicine and others; complex cases reviewed by medical experts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PUBLICATIONS ============ -->
+<section style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow" data-lang="zh">研究发表</span><span class="eyebrow" data-lang="en">Publications</span>
+      <h2 data-lang="zh">来自 i99 队列的科学证据</h2>
+      <h2 data-lang="en">Scientific Evidence from the i99 Cohort</h2>
+    </div>
+    <div class="pubs">
+      <div class="pub reveal"><span class="yr">2024</span><div><div class="pt">A genome-wide association study reveals the relationship between human genetic variation and the nasal microbiome</div><div class="pj"></div></div></div>
+      <div class="pub reveal"><span class="yr">2023</span><div><div class="pt">Distinct biological ages of organs and systems identified from a multi-omics study</div><div class="pj"></div></div></div>
+      <div class="pub reveal"><span class="yr">2023</span><div><div class="pt">A population-based study of precision health assessments using multi-omic networks-derived biological functional modules</div><div class="pj"></div></div></div>
+      <div class="pub reveal"><span class="yr">2022</span><div><div class="pt">Mendelian randomization analyses support causal relationships between blood metabolites and the gut microbiome</div><div class="pj"></div></div></div>
+      <div class="pub reveal"><span class="yr">2021</span><div><div class="pt">A genome-wide association study for gut metagenome in Chinese adults illuminates complex diseases</div><div class="pj"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta" id="contact">
+  <div class="container">
+    <div class="cta-box reveal">
+      <h2 data-lang="zh">从今天开始,主动掌控健康</h2>
+      <h2 data-lang="en">Take Control of Your Health — Proactively</h2>
+      <p data-lang="zh">预约健康咨询,或索取真实样本评估报告示例。我们的健康顾问将为你介绍 133111i 全流程服务。</p>
+      <p data-lang="en">Book a health consultation or request a sample evaluation report. Our health consultants will walk you through the full 133111i journey.</p>
+      <div class="cta-btns">
+        <a href="mailto:changshiying@genomics.cn" class="btn btn-primary" data-lang="zh">邮件预约咨询</a>
+        <a href="mailto:changshiying@genomics.cn" class="btn btn-primary" data-lang="en">Book via Email</a>
+        <a href="#top" class="btn btn-ghost" data-lang="zh">回到顶部</a>
+        <a href="#top" class="btn btn-ghost" data-lang="en">Back to Top</a>
+      </div>
+      <div class="cta-mail">✉ <b>changshiying@genomics.cn</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#top" class="logo"><span class="logo-mark">P</span><span>PanGenesis</span></a>
+        <p data-lang="zh">AI 主动精准健康与生活方式干预。以多组学与人工智能,重新定义主动健康管理。</p>
+        <p data-lang="en">AI-powered proactive precision health &amp; lifestyle intervention. Redefining proactive health management with multi-omics and AI.</p>
+      </div>
+      <div>
+        <h4 data-lang="zh">解决方案</h4><h4 data-lang="en">Solutions</h4>
+        <a href="solutions.html#individual" data-lang="zh">个人健康管理</a><a href="solutions.html#individual" data-lang="en">Individuals</a>
+        <a href="solutions.html#enterprise" data-lang="zh">企业员工健康</a><a href="solutions.html#enterprise" data-lang="en">Enterprises</a>
+        <a href="solutions.html#healthcare" data-lang="zh">医疗机构合作</a><a href="solutions.html#healthcare" data-lang="en">Healthcare &amp; Partners</a>
+      </div>
+      <div>
+        <h4 data-lang="zh">科学与技术</h4><h4 data-lang="en">Science &amp; Tech</h4>
+        <a href="#i133" data-lang="zh">133111i 体系</a><a href="#i133" data-lang="en">133111i System</a>
+        <a href="#bioage" data-lang="zh">生物年龄与生命指数</a><a href="#bioage" data-lang="en">Bio Age &amp; Life Index</a>
+        <a href="#about" data-lang="zh">团队与生态</a><a href="#about" data-lang="en">Team &amp; Ecosystem</a>
+      </div>
+      <div>
+        <h4 data-lang="zh">合规</h4><h4 data-lang="en">Compliance</h4>
+        <a href="#" data-lang="zh">医疗免责声明</a><a href="#" data-lang="en">Medical Disclaimer</a>
+        <a href="#" data-lang="zh">隐私政策与数据治理</a><a href="#" data-lang="en">Privacy &amp; Data Governance</a>
+        <a href="#" data-lang="zh">伦理与合规</a><a href="#" data-lang="en">Ethics &amp; Compliance</a>
+        <a href="#" data-lang="zh">服务条款</a><a href="#" data-lang="en">Terms of Service</a>
+      </div>
+    </div>
+    <div class="compliance" data-lang="zh"><b>重要声明:</b>PanGenesis 产品与报告用于健康风险识别、生活方式评估与健康管理支持,不替代临床诊断、处方、急诊判断或专科治疗。危急值、红旗症状、疾病诊断与药物调整须由具有相应资质的医疗专业人员处理。本网站所展示检测通量等数据为平台能力示例,具体服务以正式协议为准。</div>
+    <div class="compliance" data-lang="en"><b>Important Notice:</b> PanGenesis products and reports are for health risk identification, lifestyle assessment and health management support. They do not replace clinical diagnosis, prescriptions, emergency judgment or specialist care. Critical values, red-flag symptoms, diagnoses and medication changes must be handled by qualified medical professionals. Throughput figures shown are platform capability examples; specific services are governed by formal agreements.</div>
+    <div class="foot-bottom">
+      <span>© 2026 PanGenesis. All Rights Reserved.</span>
+      <span data-lang="zh">网站原型 · 待正式上线</span><span data-lang="en">Prototype · Pending Launch</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== i18n ===== */
+function setLang(l){
+  document.documentElement.lang = (l==='en' ? 'en' : 'zh-CN');
+  document.getElementById('langZh').classList.toggle('active', l==='zh');
+  document.getElementById('langEn').classList.toggle('active', l==='en');
+  try{localStorage.setItem('pg_lang', l);}catch(e){}
+}
+(function(){ try{ var s = localStorage.getItem('pg_lang'); if(s) setLang(s); }catch(e){} })();
+
+/* ===== reveal on scroll ===== */
+var io = new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+/* ===== counters + rings ===== */
+function animateCount(el){
+  var target = parseFloat(el.getAttribute('data-count')||el.getAttribute('data-val')||'0');
+  var suffix = el.getAttribute('data-suffix')||'';
+  var small = el.querySelector('small');
+  var t0 = null, dur = 1400;
+  function step(ts){
+    if(!t0) t0 = ts;
+    var p = Math.min((ts-t0)/dur, 1);
+    var eased = 1 - Math.pow(1-p, 3);
+    var val = Math.round(target*eased);
+    el.firstChild.nodeValue = val + (el.firstChild.nodeValue.indexOf('+')>-1?'+':'');
+    if(small) small.style.display='inline';
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+var cio = new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      animateCount(e.target);
+      var ring = e.target.closest('.ring');
+      if(ring){
+        var v = parseFloat(ring.querySelector('[data-val]').getAttribute('data-val'));
+        var c = ring.querySelector('.ringv');
+        var dash = 289 * (1 - v/100);
+        setTimeout(function(){ c.style.transition='stroke-dashoffset 1.4s ease'; c.style.strokeDashoffset = dash; }, 200);
+      }
+      cio.unobserve(e.target);
+    }
+  });
+},{threshold:.4});
+document.querySelectorAll('.stat .num, .flow-card .fnum, .ring .pct span').forEach(function(el){ cio.observe(el); });
+</script>
+</body>
+</html>
